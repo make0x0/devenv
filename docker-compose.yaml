@@ -1,0 +1,12 @@
+version: '2'
+services:
+
+  devenv:
+    command: ["tail", "-f", "/dev/null"]
+    image: devenv:latest
+  #-----------------------
+  # 以下追加
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: Asia/Tokyo
