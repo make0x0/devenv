@@ -7,6 +7,6 @@ services:
   #-----------------------
   # 以下追加
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      - ./data:/data
     environment:
       TZ: Asia/Tokyo

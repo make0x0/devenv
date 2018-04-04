@@ -47,8 +47,11 @@ RUN pip install ansible==2.0.0.2 requests pprint jupyter
 #RUN apt-get clean \
 #    && rm -rf /var/lib/apt/lists/*
 
+
+WORKDIR /root
+
 # install configs
 # screenrc
-RUN echo -e 'escape ^t^t\nbind ^g\nvbell off\nautodetach on\nbacktick 1 0 0 id -un\n hardstatus alwayslastline "%{= bw}%02c%{-}  %-w%{=u kw} %n %t %{-}%+w %=%1`@%H"\n startup_message off\n'
+RUN echo -e 'escape ^t^t\nbind ^g\nvbell off\nautodetach on\nbacktick 1 0 0 id -un\n hardstatus alwayslastline "%{= bw}%02c%{-}  %-w%{=u kw} %n %t %{-}%+w %=%1`@%H"\n startup_message off\n' > ~/.screenrc
 
 # EXPOSE
