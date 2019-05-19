@@ -1,4 +1,6 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
+
+ENV DEBIAN_FRONTEND=noninteractive
 
 # 必要なパッケージ群をインストール
 RUN apt-get update && apt-get install -y \
@@ -6,38 +8,35 @@ RUN apt-get update && apt-get install -y \
         wget curl git \
         make build-essential python-dev \
         python-pip libssl-dev zlib1g-dev libbz2-dev \
-        libreadline-dev libsqlite3-dev
-# 日本語対応
-RUN apt-get install -y language-pack-ja-base language-pack-ja
-ENV LANG=ja_JP.UTF-8
-# クリーニング
-RUN apt-get clean \
+        libreadline-dev libsqlite3-dev \
+        language-pack-ja-base language-pack-ja \
+        jq glances iotop ibus-mozc \
+        libffi-dev && \
+    apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+        
+ENV LANG=ja_JP.UTF-8
+
 # install pyenv
 RUN git clone https://github.com/yyuu/pyenv.git /usr/local/pyenv
 ENV PYENV_ROOT /usr/local/pyenv
 ENV PATH $PYENV_ROOT/bin:$PATH
 RUN eval "$(pyenv init -)"
 
+
 # install Python
-RUN pyenv install 3.6.2
+RUN pyenv install 3.7.2
 
-# Pyenv環境
+# Pyenv環境 and kubespray
 RUN pip install --upgrade pip
-RUN pip install ansible==2.0.0.2
+RUN pip install ansible==2.7.8 jinja2==2.10.1
 
-# 必要なパッケージ群をインストール
-RUN apt-get update && apt-get install -y \
-        jq glances iotop ibus-mozc
-# クリーニング
-RUN apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
 
 # デスクトップ などを英語に戻せる
 # LANG=C xdg-user-dirs-gtk-update
 # Pyenv環境
-RUN pip install --upgrade pip
-RUN pip install ansible==2.0.0.2 requests pprint jupyter
+#RUN pip install --upgrade pip
+#RUN pip install requests pprint jupyter
 
 # 試しに入れてみる
 # 必要なパッケージ群をインストール
