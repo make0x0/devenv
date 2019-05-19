@@ -21,15 +21,17 @@ ENV LANG=ja_JP.UTF-8
 RUN git clone https://github.com/yyuu/pyenv.git /usr/local/pyenv
 ENV PYENV_ROOT /usr/local/pyenv
 ENV PATH $PYENV_ROOT/bin:$PATH
-RUN eval "$(pyenv init -)"
-
+RUN echo 'eval "$(pyenv init -)"' >> ~/.bashrc && \
+    echo 'eval "PATH=$PATH:$PYENV_ROOT/bin"' >> ~/.bashrc && \
+    eval "$(pyenv init -)"
 
 # install Python
-RUN pyenv install 3.7.2
+RUN pyenv install 3.7.2 && pyenv global 3.7.2
+
 
 # Pyenv環境 and kubespray
-RUN pip install --upgrade pip
-RUN pip install ansible==2.7.8 jinja2==2.10.1
+RUN eval "$(pyenv init -)" && pip install --upgrade pip
+RUN eval "$(pyenv init -)" && pip install ansible>=2.7.8 jinja2>=2.9.6 netaddr pbr>=1.6 hvac jmespath ruamel.yaml
 
 
 # デスクトップ などを英語に戻せる
@@ -45,6 +47,7 @@ RUN pip install ansible==2.7.8 jinja2==2.10.1
 # クリーニング
 #RUN apt-get clean \
 #    && rm -rf /var/lib/apt/lists/*
+
 
 
 WORKDIR /root
